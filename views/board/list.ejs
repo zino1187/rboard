@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+a{text-decoration:none;}
+table {
+    border-collapse: collapse;
+    width: 100%;
+	position:relative;
+	left:-100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+.bt-wrapper{
+	position:relative;
+	left:100%;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+</script>
+<script>
+var dateObj;
+var yy,mm,dd;
+var today;
+
+$(function(){
+	ani();
+
+	$(".bt-wrapper button").on("click",function(){
+		$(location).attr("href","/board/write.html");	
+	});
+	
+	dateObj=new Date();
+	yy=dateObj.getFullYear();
+	mm=dateObj.getMonth()+1;
+	dd=dateObj.getDate();
+	
+	//alert(yy+"-"+getDateString(mm)+"-"+getDateString(dd));
+	today=yy+"-"+getDateString(mm)+"-"+getDateString(dd);
+});
+
+function getDateString(str){
+	var result;
+	if(parseInt(str) <10){
+		result="0"+str;
+	}else{
+		result=str;
+	}
+	return result;
+}
+
+function ani(){
+	$("table").animate({left:"0%"},800);
+	$(".bt-wrapper").animate({left:"0%"},600);
+	blink();
+}
+
+function blink(){
+    $("i").delay(100).fadeTo("fast" ,0.1).delay(100).fadeTo("fast",1, blink);
+}
+
+</script>
+</head>
+<body>
+<h2>Colored Table Header</h2>
+
+<table>
+  <tr>
+    <th width="5%">No</th>
+    <th width="70%">제목</th>
+    <th width="10%">작성자</th>
+	<th width="10%">작성일</th>
+	<th width="5%">조회수</th>
+  </tr>
+  <%for(var i=0;i<rows.length;i++){%>
+  <%var obj=rows[i];%>
+  <tr>
+    <td><%=i%></td>
+    <td>
+		<div style="position:relative;left:<%=obj.depth*2%>px">
+		<%if(obj.depth>0){%>
+			<i class="fa fa-commenting-o" style="font-size:24px;"></i>
+		<%}%>
+		<a href="/board/content?rboard_id=<%=obj.rboard_id%>"><%=obj.title%></a>
+		</div>
+	</td>
+	<td><%=obj.writer%></td>
+    <td><%=obj.regdate%></td>
+	<td><%=obj.hit%></td>	
+</tr>
+<%}%>
+</table>
+<div class="bt-wrapper">
+	<button>글쓰기</button>
+</div>
+</body>
+</html>
+
